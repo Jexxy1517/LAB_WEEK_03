@@ -1,56 +1,41 @@
 package com.example.lab_week_03
 
-import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import com.example.lab_week_03.R
 
-class ListFragment : Fragment(), View.OnClickListener {
-    private var param1: String? = null
-    private var param2: String? = null
-
-    private lateinit var coffeeListener: CoffeeListener;
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if(context is CoffeeListener){
-            coffeeListener = context
-        } else {
-            throw RuntimeException("Must implement CoffeeListener")
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+class ListFragment : Fragment() {
 
     override fun onCreateView(
-        inflater: android.view.LayoutInflater, container: android.view.ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(com.example.lab_week_03.R.layout.fragment_list, container, false)
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val coffeeList = listOf<View>(
-            view.findViewById(com.example.lab_week_03.R.id.affogato),
-            view.findViewById(com.example.lab_week_03.R.id.americano),
-            view.findViewById(com.example.lab_week_03.R.id.latte)
+            view.findViewById(R.id.affogato),
+            view.findViewById(R.id.americano),
+            view.findViewById(R.id.latte)
         )
 
-        coffeeList.forEach{
-            it.setOnClickListener(this)
-        }
-    }
-
-    override fun onClick(v: View?) {
-        v ?. let{ coffee ->
-            coffeeListener.onSelected(coffee.id)
+        coffeeList.forEach { coffee ->
+            val fragmentBundle = Bundle()
+            fragmentBundle.putInt(COFFEE_ID, coffee.id)
+            coffee.setOnClickListener {
+                it.findNavController().navigate(R.id.coffee_id_action, fragmentBundle)
+            }
         }
     }
 
     companion object {
-
+        const val COFFEE_ID = "COFFEE_ID"
     }
 }
