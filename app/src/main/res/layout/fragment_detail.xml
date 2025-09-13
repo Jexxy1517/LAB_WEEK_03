@@ -7,6 +7,12 @@
     android:padding="20dp"
     tools:context=".DetailFragment">
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/back" />
+
     <TextView
         android:id="@+id/coffee_title"
         android:layout_width="match_parent"
